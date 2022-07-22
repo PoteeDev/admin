@@ -12,7 +12,7 @@ import (
 )
 
 func ConnectDB() *mongo.Client {
-	mongoUri := fmt.Sprintf("mongodb+srv://%s:%s@%s", "admin", os.Getenv("MONGO_PASS"), os.Getenv("MONGO_HOST"))
+	mongoUri := fmt.Sprintf("mongodb://%s:%s@%s", "admin", os.Getenv("MONGO_PASS"), os.Getenv("MONGO_HOST"))
 	client, err := mongo.NewClient(options.Client().ApplyURI(mongoUri))
 	if err != nil {
 		log.Fatal(err)

@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type TeamInfo struct {
@@ -16,7 +17,31 @@ type TeamInfo struct {
 	SshPubKey string    `bson:"shh_pub_key"`
 }
 
-func List() ([]TeamInfo, error) {
+type DBTeam struct {
+	ID        primitive.ObjectID `bson:"_id"`
+	CreatedAt time.Time          `bson:"created_at"`
+	UpdatedAt time.Time          `bson:"updated_at"`
+	Name      string             `bson:"name"`
+	Login     string             `bson:"login"`
+	Hash      string             `bson:"hash"`
+	Address   string             `bson:"address"`
+	SshPubKey string             `bson:"shh_pub_key"`
+}
+
+func (t *DBTeam) AddTeam() error {
+	col := GetCollection(DB, "teams")
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	t.ID = primitive.NewObjectID()
+	_, err := col.InsertOne(ctx, t)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func GetAllTeams() ([]TeamInfo, error) {
 	var teams []TeamInfo
 	col := GetCollection(DB, "teams")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
