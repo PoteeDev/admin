@@ -4,8 +4,9 @@ go 1.18
 
 require (
 	github.com/PoteeDev/auth v0.0.0-20220722133511-77c35bad30fd
+	github.com/PoteeDev/team v0.0.0-20220722174251-cf72fafac129
 	github.com/gin-gonic/gin v1.8.1
-	go.mongodb.org/mongo-driver v1.7.3
+	go.mongodb.org/mongo-driver v1.9.1
 )
 
 require (
@@ -32,8 +33,8 @@ require (
 	github.com/xdg-go/scram v1.0.2 // indirect
 	github.com/xdg-go/stringprep v1.0.2 // indirect
 	github.com/youmark/pkcs8 v0.0.0-20181117223130-1be2e3e5546d // indirect
-	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519 // indirect
-	golang.org/x/net v0.0.0-20210428140749-89ef3d95e781 // indirect
+	golang.org/x/crypto v0.0.0-20220427172511-eb4f295cb31f // indirect
+	golang.org/x/net v0.0.0-20211112202133-69e39bad7dc2 // indirect
 	golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9 // indirect
 	golang.org/x/sys v0.0.0-20210806184541-e5e7981a1069 // indirect
 	golang.org/x/text v0.3.6 // indirect
