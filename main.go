@@ -13,6 +13,7 @@ func main() {
 	database.ConnectDB()
 	api.CreateAdmin()
 	api.UploadScenario()
+	api.UploadScripts()
 	r.GET("/ping", middleware.AdminAuthMiddleware(), func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
@@ -21,5 +22,7 @@ func main() {
 	r.GET("/teams", middleware.AdminAuthMiddleware(), handlers.TeamsList)
 	r.GET("/scenario", middleware.AdminAuthMiddleware(), handlers.GetScenario)
 	r.POST("/scenario/update", middleware.AdminAuthMiddleware(), handlers.UpdateScenario)
+	r.GET("/scripts", middleware.AdminAuthMiddleware(), handlers.GetScriptsList)
+	r.GET("/scripts/get", middleware.AdminAuthMiddleware(), handlers.GetScript)
 	r.Run()
 }

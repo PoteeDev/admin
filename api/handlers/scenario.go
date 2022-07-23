@@ -27,7 +27,7 @@ func GetScenario(c *gin.Context) {
 func UpdateScenario(c *gin.Context) {
 	var s models.JsonScenario
 	if err := c.BindJSON(&s); err != nil {
-		c.JSON(http.StatusBadRequest, err)
+		c.JSON(http.StatusBadRequest, gin.H{"detail": err.Error()})
 		return
 	}
 	api.UploadScenarioToMongo(&s.Scenario)
