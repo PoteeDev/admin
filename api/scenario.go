@@ -2,8 +2,11 @@ package api
 
 import (
 	"context"
+	"fmt"
 	"io/ioutil"
 	"log"
+	"math/rand"
+	"strconv"
 	"time"
 
 	"github.com/PoteeDev/admin/api/database"
@@ -39,11 +42,58 @@ func UploadScenarioToMongo(scenario *models.Scenario) {
 	log.Println("upload result:", result)
 }
 
+func ConvertTime(time string) (int, error) {
+	switch string(time[len(time)-1]) {
+	case "s":
+		seconds, err := strconv.Atoi(time[:len(time)-1])
+		return seconds, err
+	case "m":
+		seconds, err := strconv.Atoi(time[:len(time)-1])
+		return seconds * 60, err
+	case "h":
+		seconds, err := strconv.Atoi(time[:len(time)-1])
+		return seconds * 60 * 60, err
+	default:
+		return 0, fmt.Errorf("invalid time suffix: not 's' or 'm'")
+	}
+}
+
+func GenerateRounds(scenario *models.Scenario) {
+	randSource := rand.NewSource(time.Now().UnixNano())
+	r := rand.New(randSource)
+	roundPeriod, err := ConvertTime(scenario.Period)
+	if err != nil {
+		log.Fatal(err)
+	}
+	totalTime, err := ConvertTime(scenario.Time)
+	if err != nil {
+		log.Fatal(err)
+	}
+	for serviceName, service := range scenario.Services {
+		for exploitName, exploit := range service.Exploits {
+			exploitPeriod, err := ConvertTime(exploit.Period)
+			if err != nil {
+				log.Fatal(err)
+			}
+			exploitRoundsInterval := exploitPeriod / roundPeriod
+			var rounds = []int{exploit.Round}
+			for round := exploit.Round + exploitRoundsInterval; round < totalTime/roundPeriod; round += exploitRoundsInterval {
+				rounds = append(rounds, r.Intn(exploitRoundsInterval)+round)
+			}
+			exploit.Rounds = rounds
+			log.Printf("generate rounds for %s:%s %v", serviceName, exploitName, rounds)
+			scenario.Services[serviceName].Exploits[exploitName] = exploit
+
+		}
+	}
+}
+
 func UploadScenario() {
 	scenario, err := GetScenarioFromFile()
 	if err != nil {
 		log.Println("load from file error", err.Error())
 	}
+	GenerateRounds(scenario)
 	log.Println(scenario)
 	UploadScenarioToMongo(scenario)
 }

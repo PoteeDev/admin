@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/PoteeDev/auth v0.0.0-20220722133511-77c35bad30fd
-	github.com/PoteeDev/team v0.0.0-20220723130907-b12176f7cfa7
+	github.com/PoteeDev/entities v0.0.0-20220726111503-dca79b56b019
 	github.com/gin-gonic/gin v1.8.1
 	github.com/minio/minio-go/v7 v7.0.31
 	go.mongodb.org/mongo-driver v1.10.0

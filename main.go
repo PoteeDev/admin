@@ -19,7 +19,7 @@ func main() {
 			"message": "pong",
 		})
 	})
-	r.GET("/teams", middleware.AdminAuthMiddleware(), handlers.TeamsList)
+	r.GET("/entities", middleware.AdminAuthMiddleware(), handlers.EntitiesList)
 	r.GET("/scenario", middleware.AdminAuthMiddleware(), handlers.GetScenario)
 	r.POST("/scenario/update", middleware.AdminAuthMiddleware(), handlers.UpdateScenario)
 	r.GET("/scripts", middleware.AdminAuthMiddleware(), handlers.GetScriptsList)

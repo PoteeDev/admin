@@ -4,13 +4,13 @@ import (
 	"context"
 	"time"
 
-	"github.com/PoteeDev/team/models"
+	"github.com/PoteeDev/entities/models"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func GetAllTeams() ([]models.TeamInfo, error) {
-	var teams []models.TeamInfo
-	col := GetCollection(DB, "teams")
+func GetAllEntities() ([]models.EntityInfo, error) {
+	var entities []models.EntityInfo
+	col := GetCollection(DB, "entities")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	results, err := col.Find(ctx, bson.M{})
@@ -18,14 +18,13 @@ func GetAllTeams() ([]models.TeamInfo, error) {
 		return nil, err
 	}
 	defer results.Close(ctx)
-	defer results.Close(ctx)
 	for results.Next(ctx) {
-		var team models.TeamInfo
-		if err = results.Decode(&team); err != nil {
+		var entity models.EntityInfo
+		if err = results.Decode(&entity); err != nil {
 			return nil, err
 		}
 
-		teams = append(teams, team)
+		entities = append(entities, entity)
 	}
-	return teams, err
+	return entities, err
 }

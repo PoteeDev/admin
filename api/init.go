@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/PoteeDev/admin/api/database"
-	"github.com/PoteeDev/team/models"
+	"github.com/PoteeDev/entities/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"golang.org/x/crypto/bcrypt"
@@ -19,14 +19,14 @@ func hashPassword(password string) (string, error) {
 }
 
 func CreateAdmin() {
-	col := database.GetCollection(database.DB, "teams")
+	col := database.GetCollection(database.DB, "entities")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	hash, err := hashPassword(os.Getenv("ADMIN_PASS"))
 	if err != nil {
 		log.Fatalln("Create admin error", err.Error())
 	}
-	admin := models.Team{
+	admin := models.Entity{
 		Name:      "Admin",
 		Login:     "admin",
 		Hash:      hash,
