@@ -15,6 +15,7 @@ type Service struct {
 	Reputation int                 `yaml:"reputation" json:"reputation"`
 	Domain     string              `yaml:"domain" json:"domain"`
 	Script     string              `yaml:"script" json:"script"`
+	Checkers   []string            `yaml:"checkers" json:"checkers"`
 	Exploits   map[string]Exploits `yaml:"exploits" json:"exploits"`
 }
 
