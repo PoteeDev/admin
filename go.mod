@@ -4,8 +4,10 @@ go 1.18
 
 require (
 	github.com/PoteeDev/auth v0.0.0-20220722133511-77c35bad30fd
-	github.com/PoteeDev/entities v0.0.0-20220726111503-dca79b56b019
+	github.com/PoteeDev/entities v0.0.0-20220728114025-cdf72522c086
 	github.com/gin-gonic/gin v1.8.1
+	github.com/go-playground/validator v9.31.0+incompatible
+	github.com/gosimple/slug v1.12.0
 	github.com/minio/minio-go/v7 v7.0.31
 	go.mongodb.org/mongo-driver v1.10.0
 	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa
@@ -26,6 +28,7 @@ require (
 	github.com/google/go-cmp v0.5.6 // indirect
 	github.com/google/uuid v1.1.1 // indirect
 	github.com/gopherjs/gopherjs v1.17.2 // indirect
+	github.com/gosimple/unidecode v1.0.1 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/jtolds/gls v4.20.0+incompatible // indirect
 	github.com/klauspost/compress v1.15.9 // indirect

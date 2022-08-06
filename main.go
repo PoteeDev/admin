@@ -19,12 +19,22 @@ func main() {
 			"message": "pong",
 		})
 	})
-	r.GET("/entities", middleware.AdminAuthMiddleware(), handlers.EntitiesList)
+	entities := r.Group("/entities")
+	{
+		entities.GET("/list", middleware.AdminAuthMiddleware(), handlers.EntitiesList)
+		entities.POST("/registration", middleware.AdminAuthMiddleware(), handlers.CreateEntity)
+		entities.DELETE("/delete", middleware.AdminAuthMiddleware(), handlers.EntitiesList)
+	}
+
 	r.GET("/scenario", middleware.AdminAuthMiddleware(), handlers.GetScenario)
 	r.POST("/scenario/update", middleware.AdminAuthMiddleware(), handlers.UpdateScenario)
-	r.GET("/scripts", middleware.AdminAuthMiddleware(), handlers.GetScriptsList)
-	r.GET("/scripts/get", middleware.AdminAuthMiddleware(), handlers.GetScript)
-	r.POST("/scripts/upload", middleware.AdminAuthMiddleware(), handlers.UploadScript)
-	r.DELETE("/scripts/delete", middleware.AdminAuthMiddleware(), handlers.DeleteScript)
+
+	scripts := r.Group("/scripts", middleware.AdminAuthMiddleware())
+	{
+		scripts.GET("/list", handlers.GetScriptsList)
+		scripts.GET("/get", handlers.GetScript)
+		scripts.POST("/upload", handlers.UploadScript)
+		scripts.DELETE("/delete", handlers.DeleteScript)
+	}
 	r.Run()
 }
