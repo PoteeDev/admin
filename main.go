@@ -24,5 +24,7 @@ func main() {
 	r.POST("/scenario/update", middleware.AdminAuthMiddleware(), handlers.UpdateScenario)
 	r.GET("/scripts", middleware.AdminAuthMiddleware(), handlers.GetScriptsList)
 	r.GET("/scripts/get", middleware.AdminAuthMiddleware(), handlers.GetScript)
+	r.POST("/scripts/upload", middleware.AdminAuthMiddleware(), handlers.UploadScript)
+	r.DELETE("/scripts/delete", middleware.AdminAuthMiddleware(), handlers.DeleteScript)
 	r.Run()
 }

@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -21,13 +22,15 @@ type ScriptName struct {
 	Name string `json:"name"`
 }
 
+const bucketName = "scripts"
+
 func GetScriptsList(c *gin.Context) {
 	minioClient := api.ConnectMinio()
 	ctx, cancel := context.WithCancel(context.Background())
 
 	defer cancel()
 
-	objectCh := minioClient.ListObjects(ctx, "scripts", minio.ListObjectsOptions{
+	objectCh := minioClient.ListObjects(ctx, bucketName, minio.ListObjectsOptions{
 		Prefix:    "",
 		Recursive: true,
 	})
@@ -43,7 +46,7 @@ func GetScriptsList(c *gin.Context) {
 			Modifed: object.LastModified.String(),
 		})
 	}
-	c.JSON(http.StatusOK, gin.H{"scripts": scripts})
+	c.JSON(http.StatusOK, gin.H{bucketName: scripts})
 
 }
 
@@ -54,7 +57,7 @@ func GetScript(c *gin.Context) {
 		return
 	}
 	minioClient := api.ConnectMinio()
-	object, err := minioClient.GetObject(context.Background(), "scripts", name, minio.GetObjectOptions{})
+	object, err := minioClient.GetObject(context.Background(), bucketName, name, minio.GetObjectOptions{})
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"detail": err.Error()})
 		return
@@ -68,10 +71,39 @@ func GetScript(c *gin.Context) {
 	c.Data(http.StatusOK, "text/plain", file)
 }
 
-func UploadScript() {
+func UploadScript(c *gin.Context) {
+	script, _ := c.FormFile("file")
+	log.Println(script.Filename)
 
+	// Upload the file to specific dst.
+	// c.SaveUploadedFile(file, dst)
+	file, _ := script.Open()
+
+	minioClient := api.ConnectMinio()
+	uploadInfo, err := minioClient.PutObject(context.Background(), bucketName, script.Filename, io.Reader(file), script.Size, minio.PutObjectOptions{ContentType: "application/octet-stream"})
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println("Successfully uploaded bytes: ", uploadInfo)
+
+	c.JSON(http.StatusOK, gin.H{"msg": fmt.Sprintf("'%s' uploaded!", script.Filename), "status": "ok"})
 }
 
-func DeleteScript() {
-
+func DeleteScript(c *gin.Context) {
+	name, ok := c.GetQuery("name")
+	if !ok {
+		c.JSON(http.StatusBadRequest, gin.H{"detail": "argument empty: 'name'"})
+		return
+	}
+	minioClient := api.ConnectMinio()
+	opts := minio.RemoveObjectOptions{
+		GovernanceBypass: true,
+	}
+	err := minioClient.RemoveObject(context.Background(), bucketName, name, opts)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"detail": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"msg": fmt.Sprintf("'%s' deleted!", name), "status": "ok"})
 }
