@@ -13,6 +13,7 @@ type Scenario struct {
 
 type Service struct {
 	Reputation  int                 `yaml:"reputation" json:"reputation" bson:"reputation"`
+	Name        string              `yaml:"name" json:"name" bson:"name"`
 	Description string              `yaml:"description" json:"description" bson:"description"`
 	Domain      string              `yaml:"domain" json:"domain" bson:"domain"`
 	Script      string              `yaml:"script" json:"script" bson:"script"`
