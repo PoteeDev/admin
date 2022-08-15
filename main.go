@@ -23,6 +23,7 @@ func main() {
 	{
 		entities.GET("/list", middleware.AdminAuthMiddleware(), handlers.EntitiesList)
 		entities.POST("/registration", middleware.AdminAuthMiddleware(), handlers.CreateEntity)
+		entities.POST("/subnet", middleware.AdminAuthMiddleware(), handlers.AddSubnetToEntity)
 		entities.DELETE("/delete", middleware.AdminAuthMiddleware(), handlers.EntitiesList)
 	}
 

@@ -29,6 +29,7 @@ func EntitiesList(c *gin.Context) {
 type Entity struct {
 	Name     string `json:"name" validate:"required,min=3,max=30"`
 	Password string `json:"password" validate:"required,min=8,max=100"`
+	Subnet   string `json:"subnet"`
 	Visible  bool   `json:"visible"`
 }
 
@@ -52,6 +53,7 @@ func (t *Entity) WriteEntity(login string) error {
 		Login:     login,
 		Hash:      hash,
 		Visible:   t.Visible,
+		Subnet:    t.Subnet,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	})
