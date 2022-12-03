@@ -5,10 +5,19 @@ type JsonScenario struct {
 }
 
 type Scenario struct {
-	Time     string             `yaml:"time" json:"time" bson:"time"`
-	Period   string             `yaml:"period" json:"period" bson:"period"`
-	Actions  []string           `yaml:"actions" json:"actions" bson:"actions"`
-	Services map[string]Service `yaml:"services" json:"services" bson:"services"`
+	Time           string             `yaml:"time" json:"time" bson:"time"`
+	Period         string             `yaml:"period" json:"period" bson:"period"`
+	GloabalActions []string           `yaml:"global_actions" json:"global_actions" bson:"global_actions"`
+	Actions        []string           `yaml:"actions" json:"actions" bson:"actions"`
+	Services       map[string]Service `yaml:"services" json:"services" bson:"services"`
+	NewsChatId     int                `yaml:"news_chat_id" json:"news_chat_id" bson:"news_chat_id"`
+	News           []News             `yaml:"news" json:"news" bson:"news"`
+}
+
+type News struct {
+	Round int    `yaml:"round" json:"round" bson:"round"`
+	Text  string `yaml:"text" json:"text" bson:"text"`
+	Mode  string `yaml:"mode" json:"mode" bson:"mode"`
 }
 
 type Service struct {

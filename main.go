@@ -25,6 +25,7 @@ func main() {
 		entities.POST("/registration", middleware.AdminAuthMiddleware(), handlers.CreateEntity)
 		entities.POST("/subnet", middleware.AdminAuthMiddleware(), handlers.AddSubnetToEntity)
 		entities.DELETE("/delete", middleware.AdminAuthMiddleware(), handlers.EntitiesList)
+		entities.GET("/generate/vpn", middleware.AdminAuthMiddleware(), handlers.GenerateVpns)
 	}
 
 	r.GET("/scenario", middleware.AdminAuthMiddleware(), handlers.GetScenario)

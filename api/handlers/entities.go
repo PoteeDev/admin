@@ -30,6 +30,7 @@ type Entity struct {
 	Name     string `json:"name" validate:"required,min=3,max=30"`
 	Password string `json:"password" validate:"required,min=8,max=100"`
 	Subnet   string `json:"subnet"`
+	IP       string `json:"ip"`
 	Visible  bool   `json:"visible"`
 }
 
@@ -54,6 +55,7 @@ func (t *Entity) WriteEntity(login string) error {
 		Hash:      hash,
 		Visible:   t.Visible,
 		Subnet:    t.Subnet,
+		IP:        t.IP,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	})
