@@ -12,8 +12,13 @@ import (
 )
 
 func ConnectDB() *mongo.Client {
-	mongoUri := fmt.Sprintf("mongodb://%s:%s@%s", "admin", os.Getenv("MONGO_PASS"), os.Getenv("MONGO_HOST"))
-	client, err := mongo.NewClient(options.Client().ApplyURI(mongoUri))
+	credential := options.Credential{
+		AuthSource: os.Getenv("MONGO_DB"),
+		Username:   os.Getenv("MONGO_USER"),
+		Password:   os.Getenv("MONGO_PASS"),
+	}
+	mongoUri := fmt.Sprintf("mongodb://%s", os.Getenv("MONGO_HOST"))
+	client, err := mongo.NewClient(options.Client().ApplyURI(mongoUri).SetAuth(credential))
 	if err != nil {
 		log.Fatal(err)
 	}
