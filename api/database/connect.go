@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -18,19 +17,8 @@ func ConnectDB() *mongo.Client {
 		Password:   os.Getenv("MONGO_PASS"),
 	}
 	mongoUri := fmt.Sprintf("mongodb://%s", os.Getenv("MONGO_HOST"))
-	client, err := mongo.NewClient(options.Client().ApplyURI(mongoUri).SetAuth(credential))
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-	err = client.Connect(ctx)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	//ping the database
-	err = client.Ping(ctx, nil)
+	clientOpts := options.Client().ApplyURI(mongoUri).SetAuth(credential)
+	client, err := mongo.Connect(context.TODO(), clientOpts)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -38,11 +26,11 @@ func ConnectDB() *mongo.Client {
 	return client
 }
 
-//Client instance
+// Client instance
 var DB *mongo.Client = ConnectDB()
 
-//getting database collections
+// getting database collections
 func GetCollection(client *mongo.Client, collectionName string) *mongo.Collection {
-	collection := client.Database("ad").Collection(collectionName)
+	collection := client.Database(os.Getenv("MONGO_DB")).Collection(collectionName)
 	return collection
 }

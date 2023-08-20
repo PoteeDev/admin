@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log"
+
 	"github.com/PoteeDev/admin/api"
 	"github.com/PoteeDev/admin/api/database"
 	"github.com/PoteeDev/admin/api/handlers"
@@ -12,7 +14,7 @@ func main() {
 	r := gin.Default()
 	database.ConnectDB()
 	api.CreateAdmin()
-	api.UploadScenario()
+	//api.UploadScenario()
 	api.UploadScripts()
 	r.GET("/ping", middleware.AdminAuthMiddleware(), func(c *gin.Context) {
 		c.JSON(200, gin.H{
@@ -38,5 +40,5 @@ func main() {
 		scripts.POST("/upload", handlers.UploadScript)
 		scripts.DELETE("/delete", handlers.DeleteScript)
 	}
-	r.Run()
+	log.Fatalln(r.Run())
 }

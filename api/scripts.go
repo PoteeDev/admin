@@ -2,7 +2,6 @@ package api
 
 import (
 	"context"
-	"io/ioutil"
 	"log"
 	"os"
 
@@ -48,7 +47,7 @@ func UploadScripts() {
 		log.Printf("successfully created %s\n", bucketName)
 	}
 
-	files, err := ioutil.ReadDir("scripts/")
+	files, err := os.ReadDir("scripts/")
 	if err != nil {
 		log.Fatal(err)
 	}
