@@ -29,7 +29,7 @@ func GetAllEntities() ([]models.EntityInfo, error) {
 	return entities, err
 }
 
-func GetEntities(filter interface{}) ([]models.EntityInfo, error) {
+func GetEntities() ([]models.EntityInfo, error) {
 	var entities []models.EntityInfo
 	col := GetCollection(DB, "entities")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
