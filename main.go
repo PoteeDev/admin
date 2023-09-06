@@ -16,7 +16,7 @@ func main() {
 	api.CreateAdmin()
 	//api.UploadScenario()
 	api.UploadScripts()
-	r.GET("/ping", middleware.AdminAuthMiddleware(), func(c *gin.Context) {
+	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
 		})
@@ -40,5 +40,8 @@ func main() {
 		scripts.POST("/upload", handlers.UploadScript)
 		scripts.DELETE("/delete", handlers.DeleteScript)
 	}
-	log.Fatalln(r.Run())
+	err := r.Run()
+	if err != nil {
+		log.Fatalln("server", err)
+	}
 }
